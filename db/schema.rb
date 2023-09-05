@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_05_050557) do
     t.float "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_brands_on_name", unique: true
   end
 
   create_table "products", force: :cascade do |t|

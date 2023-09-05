@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Auth < RootAPI
   resources :auth do
-    get 'me' do
+    get "me" do
       user_authenticate!
       present current_user, with: Entities::User
     end
@@ -11,10 +13,10 @@ class Auth < RootAPI
         requires :password, type: String
       end
     end
-    post 'login' do
+    post "login" do
       user = User.authenticate!(declared_params[:user])
       extra_infos = {
-        authenticate_token: user.authenticate_token
+        authenticate_token: user.authenticate_token,
       }
       present extra_infos
       present user, with: Entities::User
@@ -27,18 +29,18 @@ class Auth < RootAPI
         requires :password, type: String
       end
     end
-    post 'register' do
+    post "register" do
       user = User.new(declared_params)
       user.role = "client"
       user.save!
       extra_infos = {
-        authenticate_token: user.authenticate_token
+        authenticate_token: user.authenticate_token,
       }
       present extra_infos
       present user, with: Entities::User
     end
 
-    delete 'logout' do
+    delete "logout" do
       user_authenticate!
       current_user.update!(authenticate_token: nil)
 
