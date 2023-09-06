@@ -7,6 +7,7 @@ class Brands < RootAPI
       use :pagination
     end
     get do
+      authenticate_admin
       brands = Brand.all
       results = pagination_values(brands)
       present results[:pagination], with: Entities::Pagination
@@ -21,6 +22,7 @@ class Brands < RootAPI
       requires :is_published, type: Boolean
     end
     post do
+      authenticate_admin
       brand = Brand.create!(declared_params)
       present brand, with: Entities::Brand
     end
@@ -28,6 +30,7 @@ class Brands < RootAPI
     route_param :id do
       desc "Get details of brand"
       get do
+        authenticate_admin
         brand = Brand.find(params[:id])
         present brand, with: Entities::Brand
       end
@@ -40,6 +43,7 @@ class Brands < RootAPI
         optional :is_published, type: Boolean
       end
       put do
+        authenticate_admin
         brand = Brand.find(params[:id])
         brand.assign_attributes(declared_params)
         brand.save!
@@ -49,8 +53,10 @@ class Brands < RootAPI
 
       desc "Delete brand"
       delete do
+        authenticate_admin
         brand = Brand.find(params[:id])
         brand.update_columns(deleted_at: Time.current)
+        status 200
         present brand, with: Entities::Brand
       end
     end

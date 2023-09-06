@@ -23,8 +23,13 @@ module GlobalHelpers
     }
   end
 
-  def user_authenticate!
+  def authenticate_user
     error!("401 Unauthorized", 401) unless current_user
+  end
+
+  def authenticate_admin
+    authenticate_user
+    error!("403 Access Denied – You don’t have permission to access", 403) unless current_user.admin?
   end
 
   def current_user

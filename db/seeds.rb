@@ -21,3 +21,10 @@ User.find_or_create_by(email: "client@gmail.com") do |user|
   user.password = "client@123"
   user.password_confirmation = "client@123"
 end
+
+products = {
+  name: Faker::Coffee.blend_name,
+  description: Faker::Coffee.notes,
+  price: 1,
+  brand_id: 2,
+}

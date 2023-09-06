@@ -20,6 +20,9 @@
 class User < ApplicationRecord
   has_secure_password
   has_secure_token :authenticate_token, length: 36
+
+  enum role: { admin: 0, client: 1 }
+
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, confirmation: true, presence: true, on: :create
 

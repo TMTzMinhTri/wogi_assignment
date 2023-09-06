@@ -4,7 +4,6 @@ require "grape-swagger"
 require "grape_logging"
 
 class RootAPI < Grape::API
-  # prefix 'api'
   format :json
   content_type :json, "application/json"
   include ExceptionsHandler
@@ -21,13 +20,14 @@ class RootAPI < Grape::API
     { logger:, include: logger_options }
 
   helpers GlobalHelpers
+
   mount Auth
   mount Brands
+  mount Products
 
   add_swagger_documentation format: :json,
     hide_documentation_path: false,
     array_use_braces: true,
-    # api_version: 'v1',
     info: {
       title: "Horses and Hussars",
       description: "Demo app for dev of grape swagger 2.0",

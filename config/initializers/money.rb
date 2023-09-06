@@ -1,15 +1,27 @@
 # encoding : utf-8
 # frozen_string_literal: true
 
+require "eu_central_bank"
+
+cache = "./tmp/storage/eu_bank_exchange_rates.xml"
+
+eu_bank = EuCentralBank.new
+
 MoneyRails.configure do |config|
   # To set the default currency
   #
-  # config.default_currency = :usd
+  config.default_currency = :usd
 
+  if !eu_bank.rates_updated_at || eu_bank.rates_updated_at < Time.now - 1.days
+    eu_bank.save_rates(cache)
+    eu_bank.update_rates(cache)
+
+    p "updating money exchange rates"
+  end
   # Set default bank object
   #
   # Example:
-  # config.default_bank = EuCentralBank.new
+  config.default_bank = eu_bank
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)

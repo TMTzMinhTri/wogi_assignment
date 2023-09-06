@@ -3,7 +3,7 @@
 class Auth < RootAPI
   resources :auth do
     get "me" do
-      user_authenticate!
+      authenticate_user
       present current_user, with: Entities::User
     end
 
@@ -41,7 +41,7 @@ class Auth < RootAPI
     end
 
     delete "logout" do
-      user_authenticate!
+      authenticate_user
       current_user.update!(authenticate_token: nil)
 
       status 200

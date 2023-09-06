@@ -5,8 +5,13 @@ module Entities
     expose :id
     expose :name
     expose :description
+    expose :price
+    expose :price_by_currency do |instance, options|
+      instance.price_by_currency(options[:currency] || "USD")
+    end
+    expose :price_display
     expose :rating
-    expose :is_published
     expose :created_at
+    expose :brand, using: Entities::Brand
   end
 end
