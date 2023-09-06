@@ -12,8 +12,6 @@ module ExceptionsHandler
         [422, e.message]
       when ApplicationError
         [400, e.message]
-      when JWTSessions::Errors::Unauthorized
-        [401, e.message || :not_authorized]
       when ActiveRecord::RecordNotFound, PageEmpty
         [404, e.message]
       when Grape::Exceptions::ValidationErrors

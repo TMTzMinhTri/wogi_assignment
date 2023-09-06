@@ -22,6 +22,7 @@ class RootAPI < Grape::API
 
   helpers GlobalHelpers
   mount Auth
+  mount Brands
 
   add_swagger_documentation format: :json,
     hide_documentation_path: false,
