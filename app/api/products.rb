@@ -12,13 +12,14 @@ class Products < RootAPI
         default: "USD"
     end
     get do
-      authenticate_admin
-      products = if declared_params[:brand_id]
-        Product.for_listing.with_brand(declared_params[:brand_id])
+      authenticate_user
+
+      products = if current_user.client?
+        current_user.products.for_listing
       else
         Product.for_listing
       end
-
+      products = products.with_brand(declared_params[:brand_id]) if declared_params[:brand_id].present?
       results = pagination_values(products)
 
       present results[:pagination], with: Entities::Pagination

@@ -9,7 +9,7 @@
 #  email              :string
 #  name               :string
 #  password_digest    :string
-#  role               :integer          default(1), not null
+#  role               :integer          default("client"), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -18,13 +18,29 @@
 #  index_users_on_email  (email) UNIQUE
 #
 class User < ApplicationRecord
+  attr_accessor :temp_password
+
   has_secure_password
   has_secure_token :authenticate_token, length: 36
 
   enum role: { admin: 0, client: 1 }
 
+  has_many :product_access_controls
+  has_many :products, through: :product_access_controls
+
+  after_initialize :generate_temp_password, if: proc { new_record? && password.blank? }
+
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, confirmation: true, presence: true, on: :create
+
+  scope :for_client, -> { where(role: :client) }
+
+  private
+
+  def generate_temp_password
+    self.temp_password = SecureRandom.base64(6).tr("+/=lIO0", "pqrsxyz")
+    self.password = temp_password
+  end
 
   class << self
     def authenticate(params)

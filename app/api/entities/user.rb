@@ -6,5 +6,6 @@ module Entities
     expose :name
     expose :email
     expose :role
+    expose :temp_password
   end
 end

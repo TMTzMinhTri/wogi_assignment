@@ -29,14 +29,19 @@ require "money-rails/helpers/action_view_extension"
 class Product < ApplicationRecord
   include MoneyRails::ActionViewExtension
 
-  belongs_to :brand, counter_cache: true
-  monetize :price_cents, numericality: { greater_than_or_equal_to: 0 }
-
   before_create :set_random_rating_for_example
+
+  monetize :price_cents, numericality: { greater_than_or_equal_to: 0 }
+  validates :name, presence: true, uniqueness: { scope: :brand_id }
+
+  belongs_to :brand, counter_cache: true
+  has_many :product_access_controls
+  has_many :users, through: :product_access_controls
 
   default_scope -> { where(deleted_at: nil) }
   scope :with_brand, ->(brand_id) { where(brand: brand_id) }
-  scope :for_listing, ->{ includes(:brand) }
+  scope :for_listing, -> { includes(:brand) }
+  scope :with_client, ->(user_id) { where(product_access_controls: { user_id: }) }
 
   def price_by_currency(currency = "USD")
     price.exchange_to(currency) unless currency == "USD"
