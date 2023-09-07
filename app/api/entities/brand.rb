@@ -8,7 +8,7 @@ module Entities
     expose :website
     expose :rating
     expose :products_count
-    expose :is_published
+    # expose :is_published
     expose :created_at
   end
 end

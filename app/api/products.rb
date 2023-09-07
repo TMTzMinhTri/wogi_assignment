@@ -15,7 +15,7 @@ class Products < RootAPI
       authenticate_user
 
       products = if current_user.client?
-        current_user.products.for_listing
+        current_user.products.for_listing.with_published
       else
         Product.for_listing
       end

@@ -12,6 +12,7 @@ module Entities
     expose :price_display
     expose :rating
     expose :created_at
+    expose :is_published
     expose :brand, using: Entities::Brand
   end
 end

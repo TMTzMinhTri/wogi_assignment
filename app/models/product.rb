@@ -7,6 +7,7 @@
 #  id             :bigint           not null, primary key
 #  deleted_at     :datetime
 #  description    :text
+#  is_published   :boolean          default(TRUE)
 #  name           :string
 #  price_cents    :integer          default(0), not null
 #  price_currency :string           default("USD"), not null
@@ -17,7 +18,8 @@
 #
 # Indexes
 #
-#  index_products_on_brand_id  (brand_id)
+#  index_products_on_brand_id      (brand_id)
+#  index_products_on_is_published  (is_published)
 #
 # Foreign Keys
 #
@@ -41,7 +43,7 @@ class Product < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
   scope :with_brand, ->(brand_id) { where(brand: brand_id) }
   scope :for_listing, -> { includes(:brand) }
-  scope :with_client, ->(user_id) { where(product_access_controls: { user_id: }) }
+  scope :with_published, -> { where(is_published: true) }
 
   def price_by_currency(currency = "USD")
     price.exchange_to(currency) unless currency == "USD"
