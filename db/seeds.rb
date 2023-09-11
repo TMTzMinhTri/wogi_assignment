@@ -22,9 +22,24 @@ User.find_or_create_by(email: "client@gmail.com") do |user|
   user.password_confirmation = "client@123"
 end
 
-products = {
-  name: Faker::Coffee.blend_name,
-  description: Faker::Coffee.notes,
-  price: 1,
-  brand_id: 2,
-}
+brands = [
+  {
+    name: Faker::Beer.brand,
+    website: Faker::Internet.url,
+    products_attributes: (1..10).map do |i|
+                           {
+                             name: Faker::Beer.name,
+                             description: Faker::Beer.style,
+                             price: i * 10,
+                           }
+                         end,
+  },
+]
+
+p brands
+
+begin
+  Brand.create!(brands)
+rescue => exception
+  p(exception.full_message)
+end

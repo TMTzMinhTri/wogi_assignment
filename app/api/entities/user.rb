@@ -7,5 +7,6 @@ module Entities
     expose :email
     expose :role
     expose :temp_password
+    expose :user_cards_count
   end
 end

@@ -10,6 +10,7 @@
 #  name               :string
 #  password_digest    :string
 #  role               :integer          default("client"), not null
+#  user_cards_count   :integer          default(0)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -27,6 +28,8 @@ class User < ApplicationRecord
 
   has_many :product_access_controls
   has_many :products, through: :product_access_controls
+  has_many :user_cards
+  has_many :cards, through: :user_cards
 
   after_initialize :generate_temp_password, if: proc { new_record? && password.blank? }
 

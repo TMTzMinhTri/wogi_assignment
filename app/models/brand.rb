@@ -30,6 +30,8 @@ class Brand < ApplicationRecord
   scope :is_published, -> { where(is_published: true) }
   default_scope -> { where(deleted_at: nil) }
 
+  accepts_nested_attributes_for :products
+
   private
 
   def set_random_rating_for_example

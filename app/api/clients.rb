@@ -16,11 +16,11 @@ class Clients < RootAPI
     end
 
     route_param :id do
-      desc "Set products available for client"
+      desc "Admin set products available for client"
       params do
         requires :product_ids, type: [Integer]
       end
-      post do
+      post "add_products" do
         authenticate_admin
         client = User.for_client.find(params[:id])
         client.product_ids = declared_params[:product_ids]

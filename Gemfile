@@ -84,5 +84,4 @@ gem "money-rails"
 gem "pagy", "~> 6.0"
 gem "rack-cors", "~> 1.1"
 gem "sidekiq", "~> 7.1"
-
 gem "eu_central_bank", "~> 1.7"

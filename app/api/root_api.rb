@@ -25,6 +25,7 @@ class RootAPI < Grape::API
   mount Brands
   mount Products
   mount Clients
+  mount Cards
 
   add_swagger_documentation format: :json,
     hide_documentation_path: false,

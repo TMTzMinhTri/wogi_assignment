@@ -20,6 +20,12 @@
 class ProductAccessControl < ApplicationRecord
   belongs_to :user
   belongs_to :product
+  has_many :user_cards, through: :product
 
   validates_uniqueness_of :user_id, scope: :product_id
+  after_destroy :remote_user_cards
+
+  def remote_user_cards
+    user_cards.destroy_all
+  end
 end
