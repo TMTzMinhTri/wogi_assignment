@@ -55,6 +55,9 @@ gem "bootsnap", require: false
 
 group :development, :test do
   gem "rubocop-shopify", require: false
+  gem "rspec-rails", "~> 6.0"
+  gem "factory_bot_rails", "~> 6.2"
+  gem "shoulda-matchers", "~> 5.0"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 end
