@@ -18,13 +18,13 @@
 #  index_user_cards_on_user_id  (user_id)
 #
 class UserCard < ApplicationRecord
+  validates_uniqueness_of :card_id, scope: :user_id
+  validate :card_quantity_available
+  validate :product_valid, if: -> { product }
+
   belongs_to :user, counter_cache: true
   belongs_to :card
   has_one :product, through: :card
-
-  validates_uniqueness_of :card_id, scope: :user_id
-  validate :card_quantity_available
-  validate :product_valid
 
   after_update :decrement_counter_from_user, if: proc { deleted_at_changed? && deleted_at_previously_was.nil? }
   after_create :decrease_card_quantity
@@ -56,7 +56,7 @@ class UserCard < ApplicationRecord
   end
 
   def card_quantity_available
-    if card.quantity == 0
+    if card&.quantity == 0
       errors.add(:base, "Card out of stock")
       false
     end

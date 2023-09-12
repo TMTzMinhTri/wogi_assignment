@@ -22,7 +22,7 @@
 #  index_cards_on_product_id         (product_id)
 #
 class Card < ApplicationRecord
-  before_validation :set_activation_number_and_pin
+  after_initialize :set_activation_number_and_pin
 
   has_many :user_cards
   has_many :users, through: :user_cards
